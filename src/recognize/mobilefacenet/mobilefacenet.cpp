@@ -12,6 +12,10 @@ Mobilefacenet::~Mobilefacenet() {
 	mobileface_net_->clear();
 }
 
+Recognizer* Mobilefacenet::Clone() {
+	return new Mobilefacenet(*this);
+}
+
 int Mobilefacenet::LoadModel(const char * root_path) {
 	std::string fr_param = std::string(root_path) + "/fr.param";
 	std::string fr_bin = std::string(root_path) + "/fr.bin";

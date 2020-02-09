@@ -12,6 +12,10 @@ ZQLandmarker::~ZQLandmarker() {
 	zq_landmarker_net_->clear();
 }
 
+Landmarker* ZQLandmarker::Clone() {
+	return new ZQLandmarker(*this);
+}
+
 int ZQLandmarker::LoadModel(const char * root_path) {
 	std::string fl_param = std::string(root_path) + "/fl.param";
 	std::string fl_bin = std::string(root_path) + "/fl.bin";

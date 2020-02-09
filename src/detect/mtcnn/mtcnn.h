@@ -11,6 +11,7 @@ class Mtcnn : public Detector {
 public:
 	Mtcnn();
 	~Mtcnn();
+	Detector* Clone();
 	int LoadModel(const char* root_path);
 	int Detect(const cv::Mat& img_src, std::vector<FaceInfo>* faces);
 

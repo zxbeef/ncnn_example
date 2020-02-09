@@ -8,27 +8,13 @@
 namespace mirror {
 class Recognizer {
 public:
-	Recognizer();
-	virtual ~Recognizer();
-	virtual int LoadModel(const char* root_path);
-	virtual int ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature);
+	virtual Recognizer* Clone() = 0;
+	virtual int LoadModel(const char* root_path) = 0;
+	virtual int ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature) = 0;
+	virtual ~Recognizer() {};
 
 };
 
-class RecognizerFactory {
-public:
-	RecognizerFactory() {};
-	virtual Recognizer* CreateRecognizer() {};
-	virtual ~RecognizerFactory() {}
-
-};
-
-class MobilefacenetRecognizerFactory : public RecognizerFactory {
-public:
-	MobilefacenetRecognizerFactory() {};
-	Recognizer* CreateRecognizer();
-	~MobilefacenetRecognizerFactory() {}
-};	
 
 }
 

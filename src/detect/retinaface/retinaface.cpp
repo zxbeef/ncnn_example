@@ -2,15 +2,19 @@
 #include <iostream>
 
 namespace mirror {
-RetinaFace::RetinaFace() :
+Retinaface::Retinaface() :
 	retina_net_(new ncnn::Net()),
 	initialized_(false) {}
 
-RetinaFace::~RetinaFace() {
+Retinaface::~Retinaface() {
 	retina_net_->clear();
 }
 
-int RetinaFace::LoadModel(const char * root_path) {
+Detector* Retinaface::Clone() {
+	return new Retinaface(*this);
+}
+
+int Retinaface::LoadModel(const char * root_path) {
 	std::string fd_param = std::string(root_path) + "/fd.param";
 	std::string fd_bin = std::string(root_path) + "/fd.bin";
 	if (retina_net_->load_param(fd_param.c_str()) == -1 ||
@@ -38,12 +42,12 @@ int RetinaFace::LoadModel(const char * root_path) {
 	return 0;
 }
 
-int RetinaFace::Detect(const cv::Mat & img_src,
+int Retinaface::Detect(const cv::Mat & img_src,
 	std::vector<FaceInfo>* faces) {
 	std::cout << "start face detect." << std::endl;
 	faces->clear();
 	if (!initialized_) {
-		std::cout << "retinaface detector model uninitialized." << std::endl;
+		std::cout << "Retinaface detector model uninitialized." << std::endl;
 		return 10000;
 	}
 	if (img_src.empty()) {

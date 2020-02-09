@@ -3,19 +3,23 @@
 #include "opencv2/imgproc.hpp"
 
 namespace mirror {
-CenterFace::CenterFace() {
+Centerface::Centerface() {
     centernet_ = new ncnn::Net();
     initialized_ = false;
 }
 
-CenterFace::~CenterFace(){
+Centerface::~Centerface(){
     centernet_->clear();
 }
 
-int CenterFace::LoadModel(const char* root_path) {
+Detector* Centerface::Clone() {
+    return new Centerface(*this);
+}
+
+int Centerface::LoadModel(const char* root_path) {
     std::cout << "start load model." << std::endl;
-    std::string param_file = std::string(root_path) + "/centerface.param";
-	std::string model_file = std::string(root_path) + "/centerface.bin";
+    std::string param_file = std::string(root_path) + "/Centerface.param";
+	std::string model_file = std::string(root_path) + "/Centerface.bin";
     if (centernet_->load_param(param_file.c_str()) == -1 ||
         centernet_->load_model(model_file.c_str()) == -1) {
         std::cout << "load model failed." << std::endl;
@@ -27,7 +31,7 @@ int CenterFace::LoadModel(const char* root_path) {
     return 0;
 }
 
-int CenterFace::Detect(const cv::Mat& img_src,
+int Centerface::Detect(const cv::Mat& img_src,
     std::vector<FaceInfo>* faces) {
     std::cout << "start detect." << std::endl;
     faces->clear();

@@ -7,10 +7,11 @@
 #include "ncnn/net.h"
 
 namespace mirror {
-class CenterFace : public Detector {
+class Centerface : public Detector {
 public:
-    CenterFace();
-    ~CenterFace();
+    Centerface();
+    ~Centerface();
+    Detector* Clone();
 	int LoadModel(const char* root_path);
 	int Detect(const cv::Mat& img_src, std::vector<FaceInfo>* faces);
 

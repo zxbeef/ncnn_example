@@ -11,7 +11,7 @@ class Mobilefacenet : public Recognizer {
 public:
 	Mobilefacenet();
 	~Mobilefacenet();
-
+	Recognizer* Clone();
 	int LoadModel(const char* root_path);
 	int ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature);
 

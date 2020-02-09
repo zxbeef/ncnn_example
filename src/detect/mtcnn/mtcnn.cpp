@@ -18,6 +18,10 @@ Mtcnn::~Mtcnn() {
 	onet_->clear();
 }
 
+Detector* Mtcnn::Clone() {
+	return new Mtcnn(*this);
+}
+
 int Mtcnn::LoadModel(const char * root_path) {
 	std::string pnet_param = std::string(root_path) + "/pnet.param";
 	std::string pnet_bin = std::string(root_path) + "/pnet.bin";

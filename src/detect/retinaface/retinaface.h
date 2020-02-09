@@ -6,10 +6,12 @@
 
 namespace mirror {
 using ANCHORS = std::vector<cv::Rect>;
-class RetinaFace : public Detector {
+class Retinaface : public Detector {
 public:
-	RetinaFace();
-	~RetinaFace();
+	Retinaface();
+	~Retinaface();
+	// 拷贝构造函数
+	Detector* Clone();
 	int LoadModel(const char* root_path);
 	int Detect(const cv::Mat& img_src, std::vector<FaceInfo>* faces);
 

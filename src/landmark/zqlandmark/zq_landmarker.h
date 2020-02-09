@@ -9,7 +9,7 @@ class ZQLandmarker : public Landmarker {
 public:
 	ZQLandmarker();
 	~ZQLandmarker();
-
+	Landmarker* Clone();
 	int LoadModel(const char* root_path);
 	int ExtractKeypoints(const cv::Mat& img_src,
 		const cv::Rect& face, std::vector<cv::Point2f>* keypoints);

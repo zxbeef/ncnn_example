@@ -5,22 +5,28 @@
 #include "database/face_database.h"
 #include "track/tracker.h"
 #include "landmark/landmarker.h"
+#include "landmark/zqlandmark/zq_landmarker.h"
 #include "recognize/recognizer.h"
+#include "recognize/mobilefacenet/mobilefacenet.h"
 #include "detect/detector.h"
+#include "detect/centerface/centerface.h"
+#include "detect/mtcnn/mtcnn.h"
+#include "detect/retinaface/retinaface.h"
+
 
 namespace mirror {
 class FaceEngine::Impl {
 public:
 	Impl() {
-		detector_factory_ = new MtcnnFactory();
-		landmarker_factory_ = new ZQLandmarkerFactory();
-		recognizer_factory_ = new MobilefacenetRecognizerFactory();
+		detector_prototype_ = new Mtcnn();
+		landmarker_prototype_ = new ZQLandmarker();
+		recognizer_prototype_ = new Mobilefacenet();
 
 		database_ = new FaceDatabase();
 		tracker_ = new Tracker();
-		detector_ = detector_factory_->CreateDetector();
-		landmarker_ = landmarker_factory_->CreateLandmarker();
-		recognizer_ = recognizer_factory_->CreateRecognizer();
+		detector_ = detector_prototype_->Clone();
+		landmarker_ = landmarker_prototype_->Clone();
+		recognizer_ = recognizer_prototype_->Clone();
 		aligner_ = new Aligner();
 		initialized_ = false;
 
@@ -30,17 +36,17 @@ public:
 		// frnet_->opt.use_vulkan_compute = 1;
 	}
 	~Impl() {
-		if (detector_factory_) {
-			delete detector_factory_;
-			detector_factory_ = nullptr;
+		if (detector_prototype_) {
+			delete detector_prototype_;
+			detector_prototype_ = nullptr;
 		}
-		if (landmarker_factory_) {
-			delete landmarker_factory_;
-			landmarker_factory_ = nullptr;
+		if (landmarker_prototype_) {
+			delete landmarker_prototype_;
+			landmarker_prototype_ = nullptr;
 		}
-		if (recognizer_factory_) {
-			delete recognizer_factory_;
-			recognizer_factory_ = nullptr;
+		if (recognizer_prototype_) {
+			delete recognizer_prototype_;
+			recognizer_prototype_ = nullptr;
 		}
 		if (database_) {
 			delete database_;
@@ -74,11 +80,12 @@ public:
 		// ncnn::destroy_gpu_instance();
 	}
 
-public:
-	DetectorFactory* detector_factory_;
-	LandmarkerFactory* landmarker_factory_;
-	RecognizerFactory* recognizer_factory_;
+private:
+	Detector* detector_prototype_;
+	Landmarker* landmarker_prototype_;
+	Recognizer* recognizer_prototype_;
 
+public:
 	FaceDatabase* database_;
 	Tracker* tracker_;
 	Detector* detector_;
