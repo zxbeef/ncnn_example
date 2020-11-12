@@ -5,7 +5,8 @@ file(GLOB_RECURSE SRC_FILES
 message(${SRC_FILES})
 
 # list(APPEND SRCS ${LAYER_ARCH_SRC})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -fPIC -std=c++11 -fopenmp")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -fPIC -std=c++11 -fopenmp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -fPIC -std=c++11")
 add_library(VisionEngine STATIC ${SRC_FILES})
 
 if(MSVC)
@@ -15,9 +16,9 @@ if(MSVC)
 	target_link_libraries(VisionEngine PUBLIC opencv_world344 ncnn)
 else()
 	find_package(OpenCV)
-	message("Opencv Version: ${OPENCV_VERSION}" )
-	include_directories(${PROJECT_SOURCE_DIR}/include/linux)
-	link_directories(${PROJECT_SOURCE_DIR}/lib/linux)
+	message("Opencv Version: ${OpenCV_VERSION}" )
+	#include_directories(${PROJECT_SOURCE_DIR}/include/linux)
+	#link_directories(${PROJECT_SOURCE_DIR}/lib/linux)
 	target_link_libraries(VisionEngine PUBLIC ${OpenCV_LIBS} ncnn)
 endif()
 
